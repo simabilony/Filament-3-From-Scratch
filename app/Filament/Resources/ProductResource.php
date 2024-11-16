@@ -58,6 +58,7 @@ class ProductResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('tags.name'),
             ])
             ->defaultSort('price', 'desc')
             ->filters([
