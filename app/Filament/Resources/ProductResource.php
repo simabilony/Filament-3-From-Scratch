@@ -38,6 +38,9 @@ class ProductResource extends Resource
                     ]),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name'),
+                Forms\Components\Select::make('tags')
+                    ->relationship('tags', 'name')
+                    ->multiple(),
             ]);
     }
 
@@ -77,7 +80,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\TagsRelationManager::class,
         ];
     }
 
@@ -89,4 +92,5 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+
 }
