@@ -61,7 +61,7 @@ class ProductResource extends Resource
                     ->money('usd')
                     ->getStateUsing(function (Product $record): float {
                         return $record->price / 100;
-                    }),
+                    })->alignEnd(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
             ->color(fn (string $state): string => match ($state) {
@@ -69,12 +69,14 @@ class ProductResource extends Resource
                 'sold out' => 'danger',
                 'coming soon' => 'info',
             }),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('m/d/Y H:i'),
                 Tables\Columns\TextColumn::make('category.name')
                     ->url(function (Product $product): string {
                         return CategoryResource::getUrl('edit', [
                             'record' => $product->category_id
                         ]);
-                    }),
+                    })->label('Category name'),
                 Tables\Columns\TextColumn::make('tags.name')
             ->badge(),
             ])
