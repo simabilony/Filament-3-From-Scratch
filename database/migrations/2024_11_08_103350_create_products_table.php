@@ -19,6 +19,7 @@ return new class extends Migration
                 ['in stock', 'sold out', 'coming soon'])
                 ->default('in stock');
             $table->foreignId('category_id')->nullable()->constrained();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

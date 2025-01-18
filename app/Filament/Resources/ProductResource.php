@@ -54,16 +54,21 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->sortable()
+                Tables\Columns\TextInputColumn::make('name')
+                    ->rules(['required', 'min:3'])
+            ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')->sortable()
                     ->money('usd')
                     ->getStateUsing(function (Product $record): float {
                         return $record->price / 100;
                     })->alignEnd(),
+                Tables\Columns\ToggleColumn::make('is_active'),
+
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
+                    //   Tables\Columns\SelectColumn::make('status')
+                    //            ->options(self::$statuses),
             ->color(fn (string $state): string => match ($state) {
                 'in stock' => 'primary',
                 'sold out' => 'danger',
