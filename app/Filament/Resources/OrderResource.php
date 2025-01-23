@@ -51,12 +51,23 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('Mark Completed')
+                        ->requiresConfirmation()
+                        ->hidden(fn (Order $record) => $record->is_completed)
+                        ->icon('heroicon-o-check-badge')
+                        ->action(fn (Order $record) => $record->update(['is_completed' => true])),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('New Order')
+                    ->url(fn (): string => OrderResource::getUrl('create')),
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),

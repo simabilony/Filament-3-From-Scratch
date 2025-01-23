@@ -33,21 +33,23 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(true),
-
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->rule('numeric'),
-                Forms\Components\Radio::make('status')
-                    ->options(self::$statuses),
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name'),
-                Forms\Components\Select::make('tags')
-                    ->relationship('tags', 'name')
-                    ->multiple(),
-            ]);
+                Forms\Components\Section::make('Main data')
+                    ->description('What users totally need to fill in')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\TextInput::make('price')
+                            ->required(),
+                    ]),
+                Forms\Components\Section::make('Additional data')
+                    ->schema([
+                        Forms\Components\Radio::make('status')
+                            ->options(self::$statuses),
+                        Forms\Components\Select::make('category_id')
+                            ->relationship('category', 'name'),
+                    ]),
+                ])->columns(4);
     }
 
     public static function table(Table $table): Table
@@ -64,7 +66,6 @@ class ProductResource extends Resource
                         return $record->price / 100;
                     })->alignEnd(),
                 Tables\Columns\ToggleColumn::make('is_active'),
-
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     //   Tables\Columns\SelectColumn::make('status')
