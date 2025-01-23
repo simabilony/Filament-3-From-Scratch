@@ -33,8 +33,7 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Main data')
-                    ->description('What users totally need to fill in')
+                Forms\Components\Fieldset::make('Main data')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -42,7 +41,7 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('price')
                             ->required(),
                     ]),
-                Forms\Components\Section::make('Additional data')
+                Forms\Components\Fieldset::make('Additional data')
                     ->schema([
                         Forms\Components\Radio::make('status')
                             ->options(self::$statuses),
