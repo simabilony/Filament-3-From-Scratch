@@ -18,7 +18,7 @@ class ProductResource extends Resource
     /**
      * @var array|string[]
      */
-
+    protected static ?int $navigationSort = 2;
     private static array $statuses = [
         'in stock' => 'in stock',
         'sold out' => 'sold out',
