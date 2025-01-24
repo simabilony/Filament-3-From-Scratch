@@ -23,8 +23,31 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema(static::getFormSchema())
+                            ->columns(2),
+
+                        Forms\Components\Section::make('Order items')
+                            ->schema(static::getFormSchema('items')),
+                    ])
+                    ->columnSpan(['lg' => fn (?Order $record) => $record === null ? 3 : 2]),
+
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Created at')
+                            ->content(fn (Order $record): ?string => $record->created_at?->diffForHumans()),
+
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Last modified at')
+                            ->content(fn (Order $record): ?string => $record->updated_at?->diffForHumans()),
+                    ])
+                    ->columnSpan(['lg' => 1])
+                    ->hidden(fn (?Order $record) => $record === null),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
