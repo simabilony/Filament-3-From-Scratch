@@ -114,4 +114,9 @@ class OrderResource extends Resource
             'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
+    public static function getNavigationBadge(): ?string
+    {
+       // return Order::whereDate('created_at', today())-
+        return Order::whereDate('created_at', today())->count() ? 'NEW' : '';
+    }
 }
