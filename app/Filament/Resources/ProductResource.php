@@ -64,7 +64,9 @@ class ProductResource extends Resource
                     ->getStateUsing(function (Product $record): float {
                         return $record->price / 100;
                     })->alignEnd(),
-                Tables\Columns\ToggleColumn::make('is_active'),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->onColor('success') // default value: "primary"
+                    ->offColor('danger'), // default value: "gray"
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     //   Tables\Columns\SelectColumn::make('status')
