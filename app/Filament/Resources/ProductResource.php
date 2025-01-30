@@ -14,10 +14,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Illuminate\Database\Eloquent\Model;
+
 
 
 class ProductResource extends Resource
 {
+    protected static ?string $recordTitleAttribute = 'name';
     /**
      * @var array|string[]
      */
@@ -27,6 +30,15 @@ class ProductResource extends Resource
         'sold out' => 'sold out',
         'coming soon' => 'coming soon',
     ];
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        return self::getUrl('view', ['record' => $record]);
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'description'];
+    }
+    protected static int $globalSearchResultsLimit = 3;
 
     protected static ?string $model = Product::class;
 
