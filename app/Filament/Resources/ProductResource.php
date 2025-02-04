@@ -52,7 +52,11 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
-                            ->unique(ignoreRecord: true),
+                            ->unique(ignoreRecord: true)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', str()->slug($state))),
+                Forms\Components\TextInput::make('slug')
+                            ->required(),
                         Forms\Components\TextInput::make('price')
                             ->required(),
                     ]),
