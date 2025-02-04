@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\Order;
@@ -13,7 +12,7 @@ class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->is_admin == 1;
+        return $user->is_admin == 0;
     }
 
     /**
@@ -21,7 +20,7 @@ class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        //
+        return true; // أو ضع شروطك هنا
     }
 
     /**
@@ -29,7 +28,7 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->is_admin == 0; // أو ضع شرط السماح هنا
     }
 
     /**
@@ -37,7 +36,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        //
+        return $user->id === $order->user_id; // مثال على السماح فقط لصاحب الطلب بالتحديث
     }
 
     /**
@@ -45,7 +44,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order): bool
     {
-        //
+        return $user->is_admin == 1; // مثال: السماح فقط للمسؤول بالحذف
     }
 
     /**
@@ -53,7 +52,7 @@ class OrderPolicy
      */
     public function restore(User $user, Order $order): bool
     {
-        //
+        return $user->is_admin == 1;
     }
 
     /**
@@ -61,6 +60,6 @@ class OrderPolicy
      */
     public function forceDelete(User $user, Order $order): bool
     {
-        //
+        return $user->is_admin == 1;
     }
 }

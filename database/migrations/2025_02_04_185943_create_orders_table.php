@@ -9,22 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->boolean('is_completed')->default(false);
+            $table->decimal('price', 10, 2)->nullable(); // إضافة عمود price
             $table->unsignedBigInteger('product_id')->nullable(); // إضافة عمود product_id
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade'); // إضافة مفتاح خارجي
+            $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign(['product_id']); // حذف المفتاح الخارجي
-            $table->dropColumn('product_id'); // حذف العمود في حالة التراجع
-        });
+        Schema::dropIfExists('orders');
     }
 };

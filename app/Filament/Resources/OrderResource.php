@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrderResource extends Resource
 {
+
     protected static ?int $navigationSort = 1;
     protected static ?string $model = Order::class;
 
@@ -50,6 +51,39 @@ class OrderResource extends Resource
                     ->hidden(fn (?Order $record) => $record === null),
             ])
             ->columns(3);
+    }
+    protected static function getFormSchema(?string $type = null): array
+    {
+        return match ($type) {
+            'items' => [
+                Forms\Components\Repeater::make('items')
+                    ->relationship('items')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\TextInput::make('quantity')
+                            ->numeric()
+                            ->required(),
+                    ])
+                    ->columns(2),
+            ],
+            default => [
+                Forms\Components\TextInput::make('user_id')
+                    ->label('User')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('product_id')
+                    ->label('Product')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('price')
+                    ->label('Price')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\Toggle::make('is_completed')
+                    ->label('Completed'),
+            ],
+        };
     }
 
     public static function table(Table $table): Table
